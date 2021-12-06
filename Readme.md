@@ -14,9 +14,19 @@ cd darkflameserver-docker
 
 For optimal compatibility you will need a game client version 1.10.64 or above.
 
-Hosting a client unfortunately is not allowed but the "nexus2" client from here should work: http://web.archive.org/web/20170706210206/http://luniserver.com/download/
+Hosting a client or a Link to one is unfortunately not allowed but clients with the following hashes should work:
+```
+# SHA256 
+8f6c7e84eca3bab93232132a88c4ae6f8367227d7eafeaa0ef9c40e86c14edf5 (packed client, rar compressed)
+c1531bf9401426042e8bab2de04ba1b723042dc01d9907c2635033d417de9e05 (packed client, includes extra locales, rar compressed)
+0d862f71eedcadc4494c4358261669721b40b2131101cbd6ef476c5a6ec6775b (unpacked client, includes extra locales, rar compressed)
+  
+# SHA1
+91498e09b83ce69f46baf9e521d48f23fe502985 (packed client, zip compressed)
+```
 
-You'll need a torrennt client like [WebTorrent](https://webtorrent.io/desktop/) to download torrents.
+You'll have to use your googling skills to find one.
+
 
 ### Gather client files
 #### Setup resource directory

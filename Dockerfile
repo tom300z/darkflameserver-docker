@@ -23,9 +23,9 @@ RUN cp -r /DarkflameServer/migrations/dlu /db-init
 
 
 # Set up CDServer DB
-RUN python3 -m utils.fdb_to_sqlite cdclient.fdb --sqlite_path res/CDServer.sqlite
+RUN python3 -m utils.fdb_to_sqlite res/cdclient.fdb --sqlite_path res/CDServer.sqlite
 RUN for file in "../migrations/cdserver/*"; do cat $file | sqlite3 res/CDServer.sqlite ; done
-RUN rm -f cdclient.fdb
+RUN rm -f res/cdclient.fdb
 
 # Clean up the image
 RUN apt-get -y remove zlib1g-dev python3 python3-pip sqlite gcc cmake git make g++

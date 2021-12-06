@@ -1,5 +1,5 @@
 # darkflameserver-docker
-A Docker Container for the Darkflame LEGO Universe server
+A Docker Container for the [Darkflame LEGO Universe server](https://github.com/DarkflameUniverse/DarkflameServer)
 
 ## How to build
 Because the Darkflame Universe server requires proprietary client files to run, distributing a pre-built image is not possible. The build process is pretty straightforward though.
@@ -11,21 +11,17 @@ Hosting a client unfortunately is not allowed but the "nexus2" client from here 
 
 You'll need a torrennt client like [WebTorrent](https://webtorrent.io/desktop/) to download torrents.
 
-
-
 ### Gather client files
-Place your client data in the "client-files" directory
-
 #### Setup resource directory
-* In the `build` directory create a `res` directory if it does not already exist.
-* Copy over or create symlinks from `macros`, `BrickModels`, `chatplus_en_us.txt`, `names`, and `maps` in your client `res` directory to the server `build/res` directory
-* Unzip the navmeshes [here](./resources/navmeshes.zip) and place them in `build/res/maps/navmeshes`
+* In the `client-files` directory create a `res` directory if it does not already exist.
+* Copy over or create symlinks from `macros`, `BrickModels`, `chatplus_en_us.txt`, `names`, and `maps` in your client `res` directory to the server `client-files/res` directory
+* Unzip the navmeshes [here](./resources/navmeshes.zip) and place them in `client-files/res/maps/navmeshes`
 
 #### Setup locale
-* In the `build` directory create a `locale` directory if it does not already exist
-* Copy over or create symlinks from `locale.xml` in your client `locale` directory to the `build/locale` directory
+* In the `client-files` directory create a `locale` directory if it does not already exist
+* Copy over or create symlinks from `locale.xml` in your client `locale` directory to the `client-files/locale` directory
 
-Your work directory structure should look like this:
+Your work directory structure should now look like this:
 ```
 Dockerfile
 start.sh
@@ -45,39 +41,46 @@ client-files/
             ...
 ...
 ```
-Now build the container using docker and assign it a tag:
+Now cou can build the container using docker and assign it a tag:
 ```bash
 docker build -t darkflameserver .
 ```
-The container should now be ready to use.
+After that the container should now be ready to use.
 
 ## Usage Examples
-### Shell (bash)
+The database you specify to the containers will automatically be initialized. The credentials will also be configured automatically.
+### Starting a Server (shell/bash)
 ```bash
 # Create a network for the Containers
 docker network create -d bridge docker_darkflameserver-net  
-# Start a mariadb container
+
+# Start a mariadb detached container
 docker run \
-  --name darkflameserver-db
+  --name darkflameserver-db \
   --network docker_darkflameserver-net \
-  -v "/host/folder:/var/lib/mysql" \
+  -v "${MY_DATABASE_FOLDER}:/var/lib/mysql" \
   -e "MYSQL_ROOT_PASSWORD=MySecretRootPW" \
+  -d \
   mariadb \
   --default-authentication-plugin=mysql_native_password
 
-# Start the DLU Container
+# Start a detached DLU Container
 docker run \
-  --name darkflameserver
+  --name darkflameserver \
   --network docker_darkflameserver-net \
-  -v "/host/folder:/config" \ 
+  -v "${MY_CONFIG_FOLDER}:/config" \
   -e "MYSQL_HOST=darkflameserver-db" \
-  -e "MYSQL_DATABASE=darkflameserver" \ 
+  -e "MYSQL_DATABASE=darkflameserver" \
   -e "MYSQL_USERNAME=root" \
-  -e "MYSQL_PASSWORD=secret" \
-  -t \ 
-  darkflameserver-server
+  -e "MYSQL_PASSWORD=MySecretRootPW" \
+  -p 1001:1001/udp
+  -p 2001-2200:2001-2200/udp
+  -p 3000-3200:3000-3200/udp
+  -t \
+  -d \
+  darkflameserver
 ```
-### Docker compose
+### Starting a Server (Docker compose)
 ```
 version: "2.2"
 services:
@@ -91,16 +94,16 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: "MySecretRootPW"
     volumes:
-      -  ${MASS_STORAGE_PATH}/services/luniserver.net/database:/var/lib/mysql
+      -  ${MY_DATABASE_FOLDER}:/var/lib/mysql
     networks:
-      luni-net:
+      darkflameserver-net:
 # Server
   darkflameserver:
-    image: luni-server
+    image: darkflameserver
     container_name: darkflameserver
     restart: always
     tty: true
-    stop_grace_period: 2s
+    stop_grace_period: 2m
     depends_on:
       - luni-db
     environment:
@@ -109,13 +112,20 @@ services:
       MYSQL_USERNAME: root
       MYSQL_PASSWORD: MySecretRootPW
     volumes:
-      -  ${MASS_STORAGE_PATH}/services/luniserver.net/config:/config
+      -  ${MY_CONFIG_FOLDER}:/config
     networks:
-      luni-net:
+      darkflameserver-net:
     ports:
       - 1001:1001/udp
       - 2001-2200:2001-2200/udp
       - 3000-3200:3000-3200/udp
+networks:
+  darkflameserver-net:
+    driver: bridge
+```
+### Check logs
+```
+docker logs darkflameserver
 ```
 
 ### Allow external access through firewalld
@@ -133,7 +143,7 @@ firewall-cmd --reload
 # Add service
 firewall-cmd --add-service=darkflameserver
 firewall-cmd --permanent --add-service=darkflameserver
-
-
 ```
 
+## Problems?
+Feel free to open an issue or a pull request.

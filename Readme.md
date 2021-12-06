@@ -2,9 +2,16 @@
 A Docker Container for the [Darkflame LEGO Universe server](https://github.com/DarkflameUniverse/DarkflameServer)
 
 ## How to build
-Because the Darkflame Universe server requires proprietary client files to run, distributing a pre-built image is not possible. The build process is pretty straightforward though.
+Because the Darkflame Universe server requires proprietary client files to function, distributing a pre-built image is not possible. The build process is mostly automated though.
+
+### Cloning the repository
+```bash
+git clone https://github.com/tom300z/darkflameserver-docker.git
+cd darkflameserver-docker
+```
 
 ### Finding a client
+
 For optimal compatibility you will need a game client version 1.10.64 or above.
 
 Hosting a client unfortunately is not allowed but the "nexus2" client from here should work: http://web.archive.org/web/20170706210206/http://luniserver.com/download/

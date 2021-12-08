@@ -140,9 +140,13 @@ networks:
   darkflameserver-net:
     driver: bridge
 ```
-### Check logs
-```
+### Checking logs
+```bash
 docker logs darkflameserver
+```
+### Creating an Admin account
+```bash
+docker exec -it darkflameserver ./MasterServer -a
 ```
 
 ### Allow external access through firewalld

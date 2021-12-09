@@ -31,7 +31,7 @@ You'll have to use your googling skills to find one.
 ### Gather client files
 #### Setup resource directory
 * In the `client-files` directory create a `res` directory if it does not already exist.
-* Copy over or create symlinks from `macros`, `BrickModels`, `chatplus_en_us.txt`, `names`, and `maps` in your client `res` directory to the server `client-files/res` directory
+* Copy over or create symlinks from `macros`, `BrickModels`, `chatplus_en_us.txt`, `names`, `cdclient.fdb`, and `maps` in your client `res` directory to the server `client-files/res` directory
 * Unzip the navmeshes [here](./resources/navmeshes.zip) and place them in `client-files/res/maps/navmeshes`
 
 #### Setup locale
@@ -46,7 +46,7 @@ client-files/
     locale/
         locale.xml
     res/
-        CDServer.sqlite
+        cdclient.fdb
         chatplus_en_us.txt
         macros/
             ...
@@ -77,6 +77,7 @@ docker run \
   --network docker_darkflameserver-net \
   -v "${MY_DATABASE_FOLDER}:/var/lib/mysql" \
   -e "MYSQL_ROOT_PASSWORD=MySecretRootPW" \
+  -p 3306:3306/tcp \
   -d \
   mariadb \
   --default-authentication-plugin=mysql_native_password
@@ -90,9 +91,9 @@ docker run \
   -e "MYSQL_DATABASE=darkflameserver" \
   -e "MYSQL_USERNAME=root" \
   -e "MYSQL_PASSWORD=MySecretRootPW" \
-  -p 1001:1001/udp
-  -p 2001-2200:2001-2200/udp
-  -p 3000-3200:3000-3200/udp
+  -p 1001:1001/udp \
+  -p 2000-2200:2000-2200/udp \
+  -p 3000-3200:3000-3200/udp \
   -t \
   -d \
   darkflameserver
@@ -114,6 +115,9 @@ services:
       -  ${MY_DATABASE_FOLDER}:/var/lib/mysql
     networks:
       darkflameserver-net:
+    ports:
+      - 3306:3306/tcp
+
 # Server
   darkflameserver:
     image: darkflameserver
@@ -134,7 +138,7 @@ services:
       darkflameserver-net:
     ports:
       - 1001:1001/udp
-      - 2001-2200:2001-2200/udp
+      - 2000-2200:2000-2200/udp
       - 3000-3200:3000-3200/udp
 networks:
   darkflameserver-net:

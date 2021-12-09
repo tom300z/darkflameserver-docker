@@ -24,7 +24,7 @@ RUN cp -r /DarkflameServer/migrations/dlu /db-init
 
 # Set up CDServer DB
 RUN python3 -m utils.fdb_to_sqlite res/cdclient.fdb --sqlite_path res/CDServer.sqlite
-RUN for file in ../migrations/cdserver/*; do cat $file | sqlite3 res/CDServer.sqlite ; done
+RUN for file in /DarkflameServer/migrations/cdserver/*; do cat $file | sqlite3 res/CDServer.sqlite ; done
 RUN rm -f res/cdclient.fdb
 
 # Clean up the image

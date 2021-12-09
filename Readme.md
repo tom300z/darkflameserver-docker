@@ -32,7 +32,7 @@ You'll have to use your googling skills to find one.
 #### Setup resource directory
 * In the `client-files` directory create a `res` directory if it does not already exist.
 * Copy over or create symlinks from `macros`, `BrickModels`, `chatplus_en_us.txt`, `names`, `cdclient.fdb`, and `maps` in your client `res` directory to the server `client-files/res` directory
-* Unzip the navmeshes [here](./resources/navmeshes.zip) and place them in `client-files/res/maps/navmeshes`
+* Unzip the navmeshes [here](https://github.com/DarkflameUniverse/DarkflameServer/blob/main/resources/navmeshes.zip) and place them in `client-files/res/maps/navmeshes`
 
 #### Setup locale
 * In the `client-files` directory create a `locale` directory if it does not already exist

@@ -47,5 +47,5 @@ RUN mkdir -p /server/logs
 
 # Set the start script as entrypoint
 COPY start.sh start.sh
-ENTRYPOINT /server/start.sh
+ENTRYPOINT [ "/bin/bash", "/server/start.sh" ]
 

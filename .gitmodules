@@ -1,0 +1,3 @@
+[submodule "AccountManager"]
+	path = AccountManager
+	url = https://github.com/Denperidge/AccountManager.git

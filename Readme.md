@@ -108,7 +108,7 @@ services:
     image: mariadb
     container_name: darkflameserver-db
     command: --default-authentication-plugin=mysql_native_password
-    restart: always
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: "MySecretRootPW"
     volumes:
@@ -122,13 +122,13 @@ services:
   darkflameserver:
     image: darkflameserver
     container_name: darkflameserver
-    restart: always
+    restart: unless-stopped
     tty: true
     stop_grace_period: 2m
     depends_on:
-      - luni-db
+      - darkflameserver-db
     environment:
-      MYSQL_HOST: luni-db
+      MYSQL_HOST: darkflameserver-db
       MYSQL_DATABASE: luniserver_net
       MYSQL_USERNAME: root
       MYSQL_PASSWORD: MySecretRootPW

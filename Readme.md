@@ -25,7 +25,7 @@ c1531bf9401426042e8bab2de04ba1b723042dc01d9907c2635033d417de9e05 (packed client,
 91498e09b83ce69f46baf9e521d48f23fe502985 (packed client, zip compressed)
 ```
 
-You'll have to use your googling skills to find one.
+You'll have to use your googling skills to find one. The [Internet Archive](https://archive.org/search.php)might also be helpful.
 
 
 ### Gather client files

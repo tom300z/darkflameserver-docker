@@ -5,7 +5,9 @@ RUN apt-get update
 RUN apt-get -y install mysql-client
 
 # Install build packages
-RUN DEBIAN_FRONTEND="noninteractive" apt-get install -y gcc cmake git make g++ zlib1g-dev python3 python3-pip sqlite
+RUN DEBIAN_FRONTEND="noninteractive" && \
+  apt remove -y libmysqlcppconn7v5 libmysqlcppconn-dev && \
+  apt-get install -y gcc cmake git make g++ zlib1g-dev python3 python3-pip sqlite libssl-dev 
 RUN pip3 install git+https://github.com/lcdr/utils
 
 # Build the DLU Server
@@ -28,7 +30,7 @@ RUN for file in /DarkflameServer/migrations/cdserver/*; do cat $file | sqlite3 r
 RUN rm -f res/cdclient.fdb
 
 # Clean up the image
-RUN apt-get -y remove zlib1g-dev python3 python3-pip sqlite gcc cmake git make g++
+RUN apt-get -y remove zlib1g-dev python3 python3-pip sqlite gcc cmake git make g++ libssl-dev
 RUN apt-get -y autoremove
 RUN rm -rdf /DarkflameServer
 
